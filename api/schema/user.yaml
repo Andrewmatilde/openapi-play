@@ -1,0 +1,12 @@
+type: object
+required:
+  - name
+  - balance
+properties:
+  name:
+    type: string
+    description: 用户名
+  balance:
+    type: integer
+    format: int32
+    description: 存款数
