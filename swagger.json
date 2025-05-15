@@ -1,0 +1,203 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "User API",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "security": [],
+  "servers": [
+    {
+      "url": "http://play:2000"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "operationId": "GetUser",
+        "summary": "用户操作",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "action",
+                  "user"
+                ],
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "create",
+                      "get",
+                      "put",
+                      "delete"
+                    ],
+                    "description": "操作类型，只能为 get/put/delete"
+                  },
+                  "user": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "用户名"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "操作成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "balance"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "用户名"
+                    },
+                    "balance": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "存款数"
+                    },
+                    "user-json": {
+                      "type": "string",
+                      "description": "用户信息 Json 格式",
+                      "contentMediaType": "application/json",
+                      "contentEncoding": "utf-8",
+                      "contentSchema": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "balance": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未找到"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserNameActionRequest": {
+        "type": "object",
+        "required": [
+          "action",
+          "user"
+        ],
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "create",
+              "get",
+              "put",
+              "delete"
+            ],
+            "description": "操作类型，只能为 get/put/delete"
+          },
+          "user": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "用户名"
+              }
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "name",
+          "balance"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "balance": {
+            "type": "integer",
+            "format": "int32",
+            "description": "存款数"
+          },
+          "user-json": {
+            "type": "string",
+            "description": "用户信息 Json 格式",
+            "contentMediaType": "application/json",
+            "contentEncoding": "utf-8",
+            "contentSchema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "balance": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserName": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名"
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}
