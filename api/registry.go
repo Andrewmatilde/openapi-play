@@ -17,7 +17,7 @@ func NewRegistry(store *pkg.Store) *Registry {
 }
 
 // 实现 ServerInterface
-func (r *Registry) PostUser(c *gin.Context) {
+func (r *Registry) UserActions(c *gin.Context) {
 	var raw map[string]interface{}
 	if err := c.ShouldBindJSON(&raw); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "请求体解析失败"})
@@ -29,7 +29,7 @@ func (r *Registry) PostUser(c *gin.Context) {
 
 	switch action {
 	case "create":
-		var req UserCreateRequest
+		var req UserNameActionRequest
 		if err := json.Unmarshal(userBytes, &req.User); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user 字段解析失败"})
 			return
@@ -51,7 +51,7 @@ func (r *Registry) PostUser(c *gin.Context) {
 		_ = json.Unmarshal([]byte(val), &user)
 		c.JSON(http.StatusOK, user)
 	case "put":
-		var req UserCreateRequest
+		var req UserNameActionRequest
 		if err := json.Unmarshal(userBytes, &req.User); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user 字段解析失败"})
 			return
