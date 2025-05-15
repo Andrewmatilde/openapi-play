@@ -10,3 +10,10 @@ properties:
     type: integer
     format: int32
     description: 存款数
+  user-json:
+    type: string
+    description: 用户信息 Json 格式
+    contentMediaType: application/json
+    contentEncoding: utf-8
+    contentSchema:
+      $ref: './user-info.yaml'

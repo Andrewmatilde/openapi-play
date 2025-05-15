@@ -28,7 +28,7 @@
   var instance;
 
   beforeEach(function() {
-    instance = new UserApi.DefaultApi();
+    instance = new UserApi.UserInfo();
   });
 
   var getProperty = function(object, getter, property) {
@@ -47,17 +47,25 @@
       object[property] = value;
   }
 
-  describe('DefaultApi', function() {
-    describe('getUser', function() {
-      it('should call getUser successfully', function(done) {
-        //uncomment below and update the code to test getUser
-        //instance.getUser(function(error) {
-        //  if (error) throw error;
-        //expect().to.be();
-        //});
-        done();
-      });
+  describe('UserInfo', function() {
+    it('should create an instance of UserInfo', function() {
+      // uncomment below and update the code to test UserInfo
+      //var instance = new UserApi.UserInfo();
+      //expect(instance).to.be.a(UserApi.UserInfo);
     });
+
+    it('should have the property name (base name: "name")', function() {
+      // uncomment below and update the code to test the property name
+      //var instance = new UserApi.UserInfo();
+      //expect(instance).to.be();
+    });
+
+    it('should have the property balance (base name: "balance")', function() {
+      // uncomment below and update the code to test the property balance
+      //var instance = new UserApi.UserInfo();
+      //expect(instance).to.be();
+    });
+
   });
 
 }));

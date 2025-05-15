@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: User API
   version: 1.0.0
@@ -11,7 +11,7 @@ servers:
 paths:
   /user:
     post:
-      operationId: UserActions
+      operationId: GetUser
       summary: 用户操作
       requestBody:
         required: true
@@ -52,3 +52,5 @@ components:
         name:
           type: string
           description: 用户名
+    UserInfo:
+      $ref: './schema/user-info.yaml'

@@ -16,8 +16,17 @@ func NewRegistry(store *pkg.Store) *Registry {
 	return &Registry{Store: store}
 }
 
+// UserJson 用户信息 Json 格式
+type UserJson struct {
+	// Balance 存款数
+	Balance int32 `json:"balance"`
+
+	// Name 用户名
+	Name string `json:"name"`
+}
+
 // 实现 ServerInterface
-func (r *Registry) UserActions(c *gin.Context) {
+func (r *Registry) GetUser(c *gin.Context) {
 	var raw map[string]interface{}
 	if err := c.ShouldBindJSON(&raw); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "请求体解析失败"})
@@ -42,13 +51,17 @@ func (r *Registry) UserActions(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "user 字段解析失败"})
 			return
 		}
-		val, ok := r.Store.Get(req.User.Name)
-		if !ok {
-			c.JSON(http.StatusNotFound, gin.H{"error": "用户不存在"})
-			return
-		}
 		var user User
-		_ = json.Unmarshal([]byte(val), &user)
+		user.Name = req.User.Name
+		user.Balance = 100
+		userjson := UserJson{
+			Balance: user.Balance,
+			Name:    user.Name,
+		}
+		userjsonBytes, _ := json.Marshal(userjson)
+		userJsonStr := string(userjsonBytes)
+		user.UserJson = &userJsonStr
+
 		c.JSON(http.StatusOK, user)
 	case "put":
 		var req UserNameActionRequest

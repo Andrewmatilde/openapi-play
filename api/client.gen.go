@@ -87,14 +87,14 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// UserActionsWithBody request with any body
-	UserActionsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetUserWithBody request with any body
+	GetUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UserActions(ctx context.Context, body UserActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetUser(ctx context.Context, body GetUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) UserActionsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUserActionsRequestWithBody(c.Server, contentType, body)
+func (c *Client) GetUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserRequestWithBody(c.Server, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -105,8 +105,8 @@ func (c *Client) UserActionsWithBody(ctx context.Context, contentType string, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) UserActions(ctx context.Context, body UserActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUserActionsRequest(c.Server, body)
+func (c *Client) GetUser(ctx context.Context, body GetUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -117,19 +117,19 @@ func (c *Client) UserActions(ctx context.Context, body UserActionsJSONRequestBod
 	return c.Client.Do(req)
 }
 
-// NewUserActionsRequest calls the generic UserActions builder with application/json body
-func NewUserActionsRequest(server string, body UserActionsJSONRequestBody) (*http.Request, error) {
+// NewGetUserRequest calls the generic GetUser builder with application/json body
+func NewGetUserRequest(server string, body GetUserJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUserActionsRequestWithBody(server, "application/json", bodyReader)
+	return NewGetUserRequestWithBody(server, "application/json", bodyReader)
 }
 
-// NewUserActionsRequestWithBody generates requests for UserActions with any type of body
-func NewUserActionsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewGetUserRequestWithBody generates requests for GetUser with any type of body
+func NewGetUserRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -200,20 +200,20 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// UserActionsWithBodyWithResponse request with any body
-	UserActionsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserActionsResponse, error)
+	// GetUserWithBodyWithResponse request with any body
+	GetUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
 
-	UserActionsWithResponse(ctx context.Context, body UserActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UserActionsResponse, error)
+	GetUserWithResponse(ctx context.Context, body GetUserJSONRequestBody, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
 }
 
-type UserActionsResponse struct {
+type GetUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *User
 }
 
 // Status returns HTTPResponse.Status
-func (r UserActionsResponse) Status() string {
+func (r GetUserResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -221,39 +221,39 @@ func (r UserActionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UserActionsResponse) StatusCode() int {
+func (r GetUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// UserActionsWithBodyWithResponse request with arbitrary body returning *UserActionsResponse
-func (c *ClientWithResponses) UserActionsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserActionsResponse, error) {
-	rsp, err := c.UserActionsWithBody(ctx, contentType, body, reqEditors...)
+// GetUserWithBodyWithResponse request with arbitrary body returning *GetUserResponse
+func (c *ClientWithResponses) GetUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
+	rsp, err := c.GetUserWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUserActionsResponse(rsp)
+	return ParseGetUserResponse(rsp)
 }
 
-func (c *ClientWithResponses) UserActionsWithResponse(ctx context.Context, body UserActionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UserActionsResponse, error) {
-	rsp, err := c.UserActions(ctx, body, reqEditors...)
+func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, body GetUserJSONRequestBody, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
+	rsp, err := c.GetUser(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUserActionsResponse(rsp)
+	return ParseGetUserResponse(rsp)
 }
 
-// ParseUserActionsResponse parses an HTTP response from a UserActionsWithResponse call
-func ParseUserActionsResponse(rsp *http.Response) (*UserActionsResponse, error) {
+// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
+func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UserActionsResponse{
+	response := &GetUserResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

@@ -35,17 +35,25 @@ export default class DefaultApi {
     }
 
 
+    /**
+     * Callback function to receive the result of the getUser operation.
+     * @callback module:api/DefaultApi~getUserCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/User} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
 
     /**
      * 用户操作
      * @param {module:model/UserNameActionRequest} userNameActionRequest 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/User} and HTTP response
+     * @param {module:api/DefaultApi~getUserCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/User}
      */
-    userActionsWithHttpInfo(userNameActionRequest) {
+    getUser(userNameActionRequest, callback) {
       let postBody = userNameActionRequest;
       // verify the required parameter 'userNameActionRequest' is set
       if (userNameActionRequest === undefined || userNameActionRequest === null) {
-        throw new Error("Missing the required parameter 'userNameActionRequest' when calling userActions");
+        throw new Error("Missing the required parameter 'userNameActionRequest' when calling getUser");
       }
 
       let pathParams = {
@@ -64,20 +72,8 @@ export default class DefaultApi {
       return this.apiClient.callApi(
         '/user', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null
+        authNames, contentTypes, accepts, returnType, null, callback
       );
-    }
-
-    /**
-     * 用户操作
-     * @param {module:model/UserNameActionRequest} userNameActionRequest 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/User}
-     */
-    userActions(userNameActionRequest) {
-      return this.userActionsWithHttpInfo(userNameActionRequest)
-        .then(function(response_and_data) {
-          return response_and_data.data;
-        });
     }
 
 

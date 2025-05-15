@@ -5,6 +5,7 @@
 README.md
 docs/DefaultApi.md
 docs/User.md
+docs/UserInfo.md
 docs/UserName.md
 docs/UserNameActionRequest.md
 git_push.sh
@@ -14,9 +15,11 @@ src/ApiClient.js
 src/api/DefaultApi.js
 src/index.js
 src/model/User.js
+src/model/UserInfo.js
 src/model/UserName.js
 src/model/UserNameActionRequest.js
 test/api/DefaultApi.spec.js
 test/model/User.spec.js
+test/model/UserInfo.spec.js
 test/model/UserName.spec.js
 test/model/UserNameActionRequest.spec.js

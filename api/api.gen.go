@@ -18,6 +18,9 @@ type User struct {
 
 	// Name 用户名
 	Name string `json:"name"`
+
+	// UserJson 用户信息 Json 格式
+	UserJson *string `json:"user-json,omitempty"`
 }
 
 // UserName defines model for UserName.
@@ -36,5 +39,5 @@ type UserNameActionRequest struct {
 // UserNameActionRequestAction 操作类型，只能为 get/put/delete
 type UserNameActionRequestAction string
 
-// UserActionsJSONRequestBody defines body for UserActions for application/json ContentType.
-type UserActionsJSONRequestBody = UserNameActionRequest
+// GetUserJSONRequestBody defines body for GetUser for application/json ContentType.
+type GetUserJSONRequestBody = UserNameActionRequest

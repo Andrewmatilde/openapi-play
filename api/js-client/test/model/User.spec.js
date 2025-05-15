@@ -66,6 +66,12 @@
       //expect(instance).to.be();
     });
 
+    it('should have the property userJson (base name: "user-json")', function() {
+      // uncomment below and update the code to test the property userJson
+      //var instance = new UserApi.User();
+      //expect(instance).to.be();
+    });
+
   });
 
 }));

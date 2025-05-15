@@ -14,6 +14,7 @@
 
 import ApiClient from './ApiClient';
 import User from './model/User';
+import UserInfo from './model/UserInfo';
 import UserName from './model/UserName';
 import UserNameActionRequest from './model/UserNameActionRequest';
 import DefaultApi from './api/DefaultApi';
@@ -62,6 +63,12 @@ export {
      * @property {module:model/User}
      */
     User,
+
+    /**
+     * The UserInfo model constructor.
+     * @property {module:model/UserInfo}
+     */
+    UserInfo,
 
     /**
      * The UserName model constructor.

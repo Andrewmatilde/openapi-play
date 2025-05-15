@@ -57,6 +57,9 @@ class User {
             if (data.hasOwnProperty('balance')) {
                 obj['balance'] = ApiClient.convertToType(data['balance'], 'Number');
             }
+            if (data.hasOwnProperty('user-json')) {
+                obj['user-json'] = ApiClient.convertToType(data['user-json'], 'String');
+            }
         }
         return obj;
     }
@@ -76,6 +79,10 @@ class User {
         // ensure the json data is a string
         if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
             throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        }
+        // ensure the json data is a string
+        if (data['user-json'] && !(typeof data['user-json'] === 'string' || data['user-json'] instanceof String)) {
+            throw new Error("Expected the field `user-json` to be a primitive type in the JSON string but got " + data['user-json']);
         }
 
         return true;
@@ -97,6 +104,12 @@ User.prototype['name'] = undefined;
  * @member {Number} balance
  */
 User.prototype['balance'] = undefined;
+
+/**
+ * 用户信息 Json 格式
+ * @member {String} user-json
+ */
+User.prototype['user-json'] = undefined;
 
 
 

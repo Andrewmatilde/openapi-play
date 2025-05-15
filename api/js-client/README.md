@@ -104,12 +104,14 @@ var UserApi = require('user_api');
 
 var api = new UserApi.DefaultApi()
 var userNameActionRequest = new UserApi.UserNameActionRequest(); // {UserNameActionRequest} 
-api.userActions(userNameActionRequest).then(function(data) {
-  console.log('API called successfully. Returned data: ' + data);
-}, function(error) {
-  console.error(error);
-});
-
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getUser(userNameActionRequest, callback);
 
 ```
 
@@ -119,12 +121,13 @@ All URIs are relative to *http://play:2000*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*UserApi.DefaultApi* | [**userActions**](docs/DefaultApi.md#userActions) | **POST** /user | 用户操作
+*UserApi.DefaultApi* | [**getUser**](docs/DefaultApi.md#getUser) | **POST** /user | 用户操作
 
 
 ## Documentation for Models
 
  - [UserApi.User](docs/User.md)
+ - [UserApi.UserInfo](docs/UserInfo.md)
  - [UserApi.UserName](docs/UserName.md)
  - [UserApi.UserNameActionRequest](docs/UserNameActionRequest.md)
 

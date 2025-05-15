@@ -11,7 +11,7 @@ import (
 type ServerInterface interface {
 	// 用户操作
 	// (POST /user)
-	UserActions(c *gin.Context)
+	GetUser(c *gin.Context)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -23,8 +23,8 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(c *gin.Context)
 
-// UserActions operation middleware
-func (siw *ServerInterfaceWrapper) UserActions(c *gin.Context) {
+// GetUser operation middleware
+func (siw *ServerInterfaceWrapper) GetUser(c *gin.Context) {
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
@@ -33,7 +33,7 @@ func (siw *ServerInterfaceWrapper) UserActions(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.UserActions(c)
+	siw.Handler.GetUser(c)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -63,5 +63,5 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 		ErrorHandler:       errorHandler,
 	}
 
-	router.POST(options.BaseURL+"/user", wrapper.UserActions)
+	router.POST(options.BaseURL+"/user", wrapper.GetUser)
 }
