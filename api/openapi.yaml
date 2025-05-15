@@ -1,56 +1,80 @@
 openapi: 3.1.0
 info:
-  title: User API
+  title: K8S Resource API
   version: 1.0.0
   license: 
-    name: MIT
-    url: https://opensource.org/licenses/MIT
+    name: None
+    url: None
 security: []
 servers: 
-  - url: http://play:2000 
+  - url: http://127.0.0.1:8080 
+
 paths:
-  /user:
+  /resource:
     post:
-      operationId: GetUser
-      summary: 用户操作
+      operationId: GetResource
+      summary: 根据 GVK + namespace + name 获取对应的 K8s 资源
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserNameActionRequest'
+              $ref: '#/components/schemas/ResourceRequest'
       responses:
-        '200':
-          description: 操作成功
+        "200":
+          description: 返回对应的资源对象
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '404':
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: 资源对象的 JSON 字符串
+                    contentMediaType: application/json
+                    contentEncoding: utf-8
+                    contentSchema:
+                      $ref: '#/components/schemas/K8sResource'
+        "404":
           description: 未找到
+
 components:
   schemas:
-    UserNameActionRequest:
+    # 请求体：把 GVK + namespace + name 展开在一个对象里
+    ResourceRequest:
       type: object
       required:
-        - action
-        - user
-      properties:
-        action:
-          type: string
-          enum: [create, get, put, delete]
-          description: 操作类型，只能为 get/put/delete
-        user:
-          $ref: '#/components/schemas/UserName'
-    User:
-      $ref: './schema/user.yaml'
-    UserName:
-      type: object
-      required:
+        - group
+        - version
+        - kind
+        - namespace
         - name
       properties:
+        group:
+          type: string
+          description: API Group，比如 ""、"apps" 等
+        version:
+          type: string
+          description: API Version，比如 "v1"
+        kind:
+          type: string
+          description: 资源类型，比如 "Pod"、"Deployment"
+        namespace:
+          type: string
+          description: 资源所在的 namespace
         name:
           type: string
-          description: 用户名
-    UserInfo:
-      $ref: './schema/user-info.yaml'
+          description: 资源名称
+    K8sResource:
+      oneOf:
+        - $ref: '#/components/schemas/Ingress'
+        - $ref: '#/components/schemas/Pod'
+      discriminator:
+        propertyName: kind
+        mapping:
+          Ingress: '#/components/schemas/Ingress'
+          Pod: '#/components/schemas/Pod'
+    Ingress:
+      $ref: 'schema/k8s-openapi.json#/components/schemas/io.k8s.api.networking.v1.Ingress'
+    Pod:
+      $ref: 'schema/api__v1_openapi.json#/components/schemas/io.k8s.api.core.v1.Pod'

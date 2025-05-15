@@ -1,27 +1,27 @@
-# UserApi.DefaultApi
+# K8SResourceApi.DefaultApi
 
-All URIs are relative to *http://play:2000*
+All URIs are relative to *http://127.0.0.1:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getUser**](DefaultApi.md#getUser) | **POST** /user | 用户操作
+[**getResource**](DefaultApi.md#getResource) | **POST** /resource | 根据 GVK + namespace + name 获取对应的 K8s 资源
 
 
 
-## getUser
+## getResource
 
-> User getUser(userNameActionRequest)
+> GetResource200Response getResource(resourceRequest)
 
-用户操作
+根据 GVK + namespace + name 获取对应的 K8s 资源
 
 ### Example
 
 ```javascript
-import UserApi from 'user_api';
+import K8SResourceApi from 'k8_s_resource_api';
 
-let apiInstance = new UserApi.DefaultApi();
-let userNameActionRequest = new UserApi.UserNameActionRequest(); // UserNameActionRequest | 
-apiInstance.getUser(userNameActionRequest, (error, data, response) => {
+let apiInstance = new K8SResourceApi.DefaultApi();
+let resourceRequest = new K8SResourceApi.ResourceRequest(); // ResourceRequest | 
+apiInstance.getResource(resourceRequest, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -35,11 +35,11 @@ apiInstance.getUser(userNameActionRequest, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **userNameActionRequest** | [**UserNameActionRequest**](UserNameActionRequest.md)|  | 
+ **resourceRequest** | [**ResourceRequest**](ResourceRequest.md)|  | 
 
 ### Return type
 
-[**User**](User.md)
+[**GetResource200Response**](GetResource200Response.md)
 
 ### Authorization
 
